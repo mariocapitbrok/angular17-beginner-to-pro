@@ -1,1 +1,4 @@
-<favorite [isFavorite]="post.isFavorite"></favorite>
+<favorite
+  [isFavorite]="post.isFavorite"
+  (change)="onFavoriteChange()"
+></favorite>

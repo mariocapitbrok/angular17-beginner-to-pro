@@ -1,5 +1,6 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { EventEmitter } from '@angular/core'; //@angular/core
 
 @Component({
   selector: 'favorite',
@@ -10,8 +11,10 @@ import { CommonModule } from '@angular/common';
 })
 export class FavoriteComponent {
   @Input('isFavorite') isSelected = true;
+  @Output() change = new EventEmitter();
 
   onClick() {
     this.isSelected = !this.isSelected;
+    this.change.emit();
   }
 }
