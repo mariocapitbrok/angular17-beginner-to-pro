@@ -1,0 +1,8 @@
+<span
+  class="bi"
+  [class.bi-heart-fill]="isActive"
+  [class.bi-heart]="!isActive"
+  (click)="onClick()"
+></span>
+
+<span>{{ likesCount }}</span>
