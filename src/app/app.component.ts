@@ -1,7 +1,10 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
-import { FavoriteComponent } from './favorite/favorite.component';
+import {
+  FavoriteChangedEventArgs,
+  FavoriteComponent,
+} from './favorite/favorite.component';
 
 @Component({
   selector: 'app-root',
@@ -16,7 +19,7 @@ export class AppComponent {
     isFavorite: true,
   };
 
-  onFavoriteChange(isFavorite: boolean) {
-    console.log('Favorite changed: ', isFavorite);
+  onFavoriteChange(eventArgs: FavoriteChangedEventArgs) {
+    console.log('Favorite changed: ', eventArgs);
   }
 }

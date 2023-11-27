@@ -15,6 +15,12 @@ export class FavoriteComponent {
 
   onClick() {
     this.isSelected = !this.isSelected;
-    this.change.emit(this.isSelected);
+    this.change.emit({
+      newValue: this.isSelected,
+    });
   }
+}
+
+export interface FavoriteChangedEventArgs {
+  newValue: boolean;
 }
