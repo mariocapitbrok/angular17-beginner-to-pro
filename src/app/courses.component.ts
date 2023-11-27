@@ -1,15 +1,17 @@
-import { TestBed } from '@angular/core/testing';
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms'; // Import FormsModule
 
 @Component({
   selector: 'courses',
   standalone: true,
-  imports: [CommonModule],
-  template: `
-    <button class="btn btn-primary" [class.active]="isActive">Save</button>
-  `,
+  imports: [CommonModule, FormsModule], // Add FormsModule to the imports array
+  template: ` <input [(ngModel)]="email" (keyup.enter)="onKeyUp()" /> `,
 })
 export class CoursesComponent {
-  isActive = true;
+  email = 'me@example.com';
+
+  onKeyUp() {
+    console.log(this.email);
+  }
 }
