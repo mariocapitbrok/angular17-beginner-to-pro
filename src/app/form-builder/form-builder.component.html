@@ -1,1 +1,13 @@
-<p>form-builder works!</p>
+<!-- Reminder -->
+<form [formGroup]="form">
+  <input formControlName="name" />
+  <div formGroupName="contact">
+    <input formControlName="email" />
+    <input formControlName="phone" />
+  </div>
+  <ul>
+    <li *ngFor="let topic of topics.controls">
+      {{ topic.value }}
+    </li>
+  </ul>
+</form>

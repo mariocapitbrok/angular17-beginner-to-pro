@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ReactiveFormsModule } from '@angular/forms';
 import {
   FormBuilder,
   FormArray,
@@ -11,21 +12,12 @@ import {
 @Component({
   selector: 'form-builder',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './form-builder.component.html',
   styleUrl: './form-builder.component.css',
 })
 export class FormBuilderComponent {
   form;
-
-  // form = new FormGroup({
-  //   name: new FormControl('', Validators.required),
-  //   contact: new FormGroup({
-  //     email: new FormControl(),
-  //     phone: new FormControl(),
-  //   }),
-  //   topics: new FormArray([]),
-  // });
 
   constructor(fb: FormBuilder) {
     this.form = fb.group({
@@ -36,5 +28,9 @@ export class FormBuilderComponent {
       }),
       topics: fb.array([]),
     });
+  }
+
+  get topics(): FormArray {
+    return this.form.get('topics') as FormArray;
   }
 }
