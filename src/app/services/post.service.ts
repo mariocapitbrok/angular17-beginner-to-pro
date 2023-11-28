@@ -6,7 +6,7 @@ import { Post } from '../posts/post.interface';
   providedIn: 'root',
 })
 export class PostService {
-  private url = 'https://ERROR-EXAMPLE-jsonplaceholder.typicode.com/posts';
+  private url = 'https://jsonplaceholder.typicode.com/posts';
 
   constructor(private http: HttpClient) {}
 
@@ -28,7 +28,7 @@ export class PostService {
     );
   }
 
-  deletePost(post: Post) {
-    return this.http.delete(this.url + '/' + post.id);
+  deletePost(id?: number) {
+    return this.http.delete(this.url + '/' + id);
   }
 }
