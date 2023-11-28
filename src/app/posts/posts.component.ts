@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
+import { Post } from './post.interface';
 
 @Component({
   selector: 'posts',
@@ -10,13 +11,25 @@ import { HttpClientModule, HttpClient } from '@angular/common/http';
   styleUrl: './posts.component.css',
 })
 export class PostsComponent {
-  posts!: any[];
+  posts!: Post[];
+  private url = 'https://jsonplaceholder.typicode.com/posts';
 
-  constructor(http: HttpClient) {
-    http
-      .get('https://jsonplaceholder.typicode.com/posts')
+  constructor(private http: HttpClient) {
+    http.get(this.url).subscribe((response) => {
+      this.posts = response as Post[];
+    });
+  }
+
+  createPost(input: HTMLInputElement) {
+    let post: Post = { title: input.value };
+    input.value = '';
+
+    this.http
+      .post<Post>(this.url, JSON.stringify(post))
       .subscribe((response) => {
-        this.posts = response as any[];
+        post.id = response.id;
+        this.posts.splice(0, 0, post);
+        console.log(response);
       });
   }
 }
