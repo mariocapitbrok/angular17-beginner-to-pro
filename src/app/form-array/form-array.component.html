@@ -1,0 +1,17 @@
+<form (submit)="onSubmit($event)">
+  <input
+    type="text"
+    class="form-control"
+    (keyup.enter)="addTopic(topic); $event.preventDefault()"
+    #topic
+  />
+  <ul class="list-group">
+    <li
+      *ngFor="let control of topics.controls; let i = index"
+      (click)="removeTopic(i)"
+      class="list-group-item"
+    >
+      {{ control.value }}
+    </li>
+  </ul>
+</form>
