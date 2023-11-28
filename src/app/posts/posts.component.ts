@@ -17,32 +17,56 @@ export class PostsComponent implements OnInit {
   constructor(private service: PostService) {}
 
   ngOnInit(): void {
-    this.service.getPosts().subscribe((response) => {
-      this.posts = response as Post[];
-    });
+    this.service.getPosts().subscribe(
+      (response) => {
+        this.posts = response as Post[];
+      },
+      (error) => {
+        alert('An unexpected error ocurred.');
+        console.log(error);
+      }
+    );
   }
 
   createPost(input: HTMLInputElement) {
     let post: Post = { title: input.value };
     input.value = '';
 
-    this.service.createPost(post).subscribe((response) => {
-      post.id = response.id;
-      this.posts.splice(0, 0, post);
-      console.log(response);
-    });
+    this.service.createPost(post).subscribe(
+      (response) => {
+        post.id = response.id;
+        this.posts.splice(0, 0, post);
+        console.log(response);
+      },
+      (error) => {
+        alert('An unexpected error ocurred.');
+        console.log(error);
+      }
+    );
   }
 
   updatePost(post: Post) {
-    this.service.updatePost(post).subscribe((response) => {
-      console.log(response);
-    });
+    this.service.updatePost(post).subscribe(
+      (response) => {
+        console.log(response);
+      },
+      (error) => {
+        alert('An unexpected error ocurred.');
+        console.log(error);
+      }
+    );
   }
 
   deletePost(post: Post) {
-    this.service.deletePost(post).subscribe((response) => {
-      let index = this.posts.indexOf(post);
-      this.posts.splice(index, 1);
-    });
+    this.service.deletePost(post).subscribe(
+      (response) => {
+        let index = this.posts.indexOf(post);
+        this.posts.splice(index, 1);
+      },
+      (error) => {
+        alert('An unexpected error ocurred.');
+        console.log(error);
+      }
+    );
   }
 }

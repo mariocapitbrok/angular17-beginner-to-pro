@@ -6,7 +6,7 @@ import { Post } from '../posts/post.interface';
   providedIn: 'root',
 })
 export class PostService {
-  private url = 'https://jsonplaceholder.typicode.com/posts';
+  private url = 'https://ERROR-EXAMPLE-jsonplaceholder.typicode.com/posts';
 
   constructor(private http: HttpClient) {}
 
