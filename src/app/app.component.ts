@@ -1,19 +1,13 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
-import { LikeComponent } from './like/like.component';
+import { ZippyComponent } from './zippy/zippy.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, RouterOutlet, LikeComponent],
+  imports: [CommonModule, RouterOutlet, ZippyComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
 })
-export class AppComponent {
-  tweet = {
-    body: 'Here is the body of a tweet...',
-    isLiked: false,
-    likesCount: 0,
-  };
-}
+export class AppComponent {}
