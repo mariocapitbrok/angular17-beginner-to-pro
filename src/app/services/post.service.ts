@@ -4,7 +4,6 @@ import { Post } from '../posts/post.interface';
 import { catchError, throwError } from 'rxjs';
 import { AppError } from '../common/app-error';
 import { NotFoundError } from '../common/not-found-error';
-import { error } from 'console';
 import { BadInput } from '../common/bad-input';
 
 @Injectable({
