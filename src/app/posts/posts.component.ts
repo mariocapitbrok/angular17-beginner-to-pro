@@ -24,13 +24,10 @@ export class PostsComponent implements OnInit {
   }
 
   private fetchPosts(): void {
+    //throw new Error('Test Error');
     this.service.getPosts().subscribe({
       next: (response) => {
         this.posts = response as Post[];
-      },
-      error: (error: AppError) => {
-        alert('An unexpected error occurred while fetching posts.');
-        console.log(error);
       },
     });
   }
@@ -42,17 +39,13 @@ export class PostsComponent implements OnInit {
     this.service.createPost(post).subscribe({
       next: (response) => {
         post.id = response.id;
-        this.posts.unshift(post); // Use unshift to add the new post at the beginning of the array.
+        this.posts.unshift(post);
         console.log(response);
       },
       error: (error: AppError) => {
         if (error instanceof BadInput) {
-          // Handle BadInput error if needed.
           console.log('Bad input error:', error.originalError);
-        } else {
-          alert('An unexpected error occurred while creating a post.');
-          console.log(error);
-        }
+        } else throw error;
       },
     });
   }
@@ -60,16 +53,12 @@ export class PostsComponent implements OnInit {
   updatePost(post: Post): void {
     this.service.updatePost(post).subscribe({
       next: (response) => {
-        // Handle the successful update if needed.
         console.log('Post updated successfully:', response);
       },
       error: (error: AppError) => {
         if (error instanceof NotFoundError) {
           alert('This post has already been deleted.');
-        } else {
-          alert('An unexpected error occurred while updating the post.');
-          console.log(error);
-        }
+        } else throw error;
       },
     });
   }
@@ -85,10 +74,7 @@ export class PostsComponent implements OnInit {
       error: (error: AppError) => {
         if (error instanceof NotFoundError) {
           alert('This post has already been deleted.');
-        } else {
-          alert('An unexpected error occurred while deleting the post.');
-          console.log(error);
-        }
+        } else throw error;
       },
     });
   }
