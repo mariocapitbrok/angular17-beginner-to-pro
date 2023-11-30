@@ -3,6 +3,9 @@ import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { Post } from './post.interface';
 import { PostService } from '../services/post.service';
+import { AppError } from '../common/app-error';
+import { NotFoundError } from '../common/not-found-error';
+import { BadInput } from '../common/bad-input';
 
 @Component({
   selector: 'posts',
@@ -17,64 +20,76 @@ export class PostsComponent implements OnInit {
   constructor(private service: PostService) {}
 
   ngOnInit(): void {
-    this.service.getPosts().subscribe(
-      (response) => {
+    this.fetchPosts();
+  }
+
+  private fetchPosts(): void {
+    this.service.getPosts().subscribe({
+      next: (response) => {
         this.posts = response as Post[];
       },
-      (error) => {
-        alert('An unexpected error ocurred.');
+      error: (error: AppError) => {
+        alert('An unexpected error occurred while fetching posts.');
         console.log(error);
-      }
-    );
+      },
+    });
   }
 
-  createPost(input: HTMLInputElement) {
-    let post: Post = { title: input.value };
+  createPost(input: HTMLInputElement): void {
+    const post: Post = { title: input.value };
     input.value = '';
 
-    this.service.createPost(post).subscribe(
-      (response) => {
+    this.service.createPost(post).subscribe({
+      next: (response) => {
         post.id = response.id;
-        this.posts.splice(0, 0, post);
+        this.posts.unshift(post); // Use unshift to add the new post at the beginning of the array.
         console.log(response);
       },
-      (error: Response) => {
-        if (error.status === 400) {
-          //this.form.setErrors(error.json());
+      error: (error: AppError) => {
+        if (error instanceof BadInput) {
+          // Handle BadInput error if needed.
+          console.log('Bad input error:', error.originalError);
         } else {
-          alert('An unexpected error ocurred.');
+          alert('An unexpected error occurred while creating a post.');
           console.log(error);
         }
-      }
-    );
+      },
+    });
   }
 
-  updatePost(post: Post) {
-    this.service.updatePost(post).subscribe(
-      (response) => {
-        console.log(response);
+  updatePost(post: Post): void {
+    this.service.updatePost(post).subscribe({
+      next: (response) => {
+        // Handle the successful update if needed.
+        console.log('Post updated successfully:', response);
       },
-      (error) => {
-        alert('An unexpected error ocurred.');
-        console.log(error);
-      }
-    );
-  }
-
-  deletePost(post: Post) {
-    this.service.deletePost(post.id).subscribe(
-      (response) => {
-        let index = this.posts.indexOf(post);
-        this.posts.splice(index, 1);
-      },
-      (error: Response) => {
-        if (error.status === 404) {
+      error: (error: AppError) => {
+        if (error instanceof NotFoundError) {
           alert('This post has already been deleted.');
         } else {
-          alert('An unexpected error ocurred.');
+          alert('An unexpected error occurred while updating the post.');
           console.log(error);
         }
-      }
-    );
+      },
+    });
+  }
+
+  deletePost(post: Post): void {
+    this.service.deletePost(post.id).subscribe({
+      next: (response) => {
+        const index = this.posts.findIndex((p) => p.id === post.id);
+        if (index !== -1) {
+          this.posts.splice(index, 1);
+        }
+      },
+      error: (error: AppError) => {
+        if (error instanceof NotFoundError) {
+          alert('This post has already been deleted.');
+        } else {
+          alert('An unexpected error occurred while deleting the post.');
+          console.log(error);
+        }
+      },
+    });
   }
 }
