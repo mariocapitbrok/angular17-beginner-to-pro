@@ -24,7 +24,6 @@ export class PostsComponent implements OnInit {
   }
 
   private fetchPosts(): void {
-    //throw new Error('Test Error');
     this.service.getAll().subscribe({
       next: (posts) => {
         this.posts = posts as Post[];
@@ -34,15 +33,18 @@ export class PostsComponent implements OnInit {
 
   createPost(input: HTMLInputElement): void {
     const post: Post = { title: input.value };
+    this.posts.unshift(post);
+
     input.value = '';
 
     this.service.create(post).subscribe({
       next: (newPost) => {
         post.id = newPost.id;
-        this.posts.unshift(post);
         console.log(newPost);
       },
       error: (error: AppError) => {
+        this.posts.splice(0, 1);
+
         if (error instanceof BadInput) {
           console.log('Bad input error:', error.originalError);
         } else throw error;
@@ -64,14 +66,15 @@ export class PostsComponent implements OnInit {
   }
 
   deletePost(post: Post): void {
+    const index = this.posts.indexOf(post);
+    if (index !== -1) {
+      this.posts.splice(index, 1);
+    }
+
     this.service.delete(post.id).subscribe({
-      next: () => {
-        const index = this.posts.findIndex((p) => p.id === post.id);
-        if (index !== -1) {
-          this.posts.splice(index, 1);
-        }
-      },
       error: (error: AppError) => {
+        this.posts.splice(index, 0, post);
+
         if (error instanceof NotFoundError) {
           alert('This post has already been deleted.');
         } else throw error;
