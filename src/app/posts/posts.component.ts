@@ -25,7 +25,7 @@ export class PostsComponent implements OnInit {
 
   private fetchPosts(): void {
     //throw new Error('Test Error');
-    this.service.getPosts().subscribe({
+    this.service.getAll().subscribe({
       next: (response) => {
         this.posts = response as Post[];
       },
@@ -36,7 +36,7 @@ export class PostsComponent implements OnInit {
     const post: Post = { title: input.value };
     input.value = '';
 
-    this.service.createPost(post).subscribe({
+    this.service.create(post).subscribe({
       next: (response) => {
         post.id = response.id;
         this.posts.unshift(post);
@@ -51,7 +51,7 @@ export class PostsComponent implements OnInit {
   }
 
   updatePost(post: Post): void {
-    this.service.updatePost(post).subscribe({
+    this.service.update(post).subscribe({
       next: (response) => {
         console.log('Post updated successfully:', response);
       },
@@ -64,7 +64,7 @@ export class PostsComponent implements OnInit {
   }
 
   deletePost(post: Post): void {
-    this.service.deletePost(post.id).subscribe({
+    this.service.delete(post.id).subscribe({
       next: (response) => {
         const index = this.posts.findIndex((p) => p.id === post.id);
         if (index !== -1) {
