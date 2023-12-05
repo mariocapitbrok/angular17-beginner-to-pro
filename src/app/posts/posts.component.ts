@@ -6,6 +6,7 @@ import { PostService } from '../services/post.service';
 import { AppError } from '../common/app-error';
 import { NotFoundError } from '../common/not-found-error';
 import { BadInput } from '../common/bad-input';
+import { throwError } from 'rxjs';
 
 @Component({
   selector: 'posts',
@@ -52,8 +53,10 @@ export class PostsComponent implements OnInit {
     });
   }
 
-  updatePost(post: Post): void {
-    this.service.update(post).subscribe({
+  updatePost(id: number, post: Post): void {
+    if (id === undefined) throwError(() => 'Cannot update item without an ID');
+
+    this.service.update(id, post).subscribe({
       next: (updatedPost) => {
         console.log('Post updated successfully:', updatedPost);
       },
