@@ -1,11 +1,13 @@
-<div *ngFor="let follower of followers" class="media">
-  <img
-    class="avatar mr-3"
-    src="{{ follower.avatar_url }}"
-    alt="Generic placeholder image"
-  />
-  <div class="media-body">
-    <h5 class="mt-0">{{ follower.login }}</h5>
+<div *ngFor="let follower of followers" class="d-flex">
+  <div class="flex-shrink-0">
+    <img
+      src="{{ follower.avatar_url }}"
+      class="avatar rounded-circle"
+      alt="Sample Image"
+    />
+  </div>
+  <div class="flex-grow-1 ms-3">
+    <h5>{{ follower.login }}</h5>
     <a href="follower.html_url">{{ follower.html_url }}</a>
   </div>
 </div>
